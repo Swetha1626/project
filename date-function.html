@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Date Function</title>
+  </head>
+  <style>
+      body{
+        background: #67B26F;  
+        background: -webkit-linear-gradient(to right, #4ca2cd, #67B26F);  
+        background: linear-gradient(to right, #4ca2cd, #67B26F); 
+
+    }
+      .row{
+          padding:40px;
+      }
+      .rs{
+          padding:20px;
+      }
+  </style>
+   <body>
+       <div class="container">
+           <div class="row">
+               <div class="col text-center">
+                   <h1>Difference between two Dates!</h1>
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-6">
+                   <label>Start Date</label>
+                   <input class="form-control" type="date" id="startDate" name="startDate" required>
+               </div>
+               <div class="col-6">
+                   <label>End Date</label>
+                   <input class="form-control" type="date" id="endDate" name="endDate" required>
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-12 text-center">
+                <button type="button" class="btn btn-primary" id="findDiff" name="findDiff" disabled>
+                    Find Difference
+                  </button>
+               </div>
+           </div>
+           <hr>
+           <div class="row recent-searches">
+               <h2 style="font-weight:500">Recent Searches!</h2>
+
+           </div>
+       </div>
+
+       <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="resultModalLabel">Result</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>The difference between the dates <span style="font-weight:bold;" id="sd"></span> and <span style="font-weight:bold;" id="ed">End Date</span> is <span style="font-weight:bold;" id="result"></span> Days</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+   </body>
+   <script>
+
+       $(document).ready(function(){
+        $('#findDiff').prop("disabled",true);
+        });
+
+        $(document).change(function(){
+           if($('#startDate').val()=='' || $('#endDate').val()==''){
+               $('#findDiff').prop("disabled",true);
+           }
+           else{
+               $('#findDiff').prop("disabled",false);
+           }
+       });
+
+       $('#findDiff').click(function(e){
+            e.preventDefault();
+            var sd = $('#startDate').val();
+            var ed = $('#endDate').val();
+            if(sd!='' && ed!=''){
+                d1 = new Date(sd);
+                d2 = new Date(ed);
+                var result = Math.floor((Date.UTC(d2.getFullYear(), d2.getMonth(), d2.getDate()) - Date.UTC(d1.getFullYear(), d1.getMonth(), d1.getDate()) ) /(1000 * 60 * 60 * 24));
+                if(result<0){
+                    alert("Please choose the End Date greater than Start Date!");
+                    $('#endDate').val('');
+                }
+                else{
+                    $('#result').html(result);
+                    $('#sd').html(sd);
+                    $('#ed').html(ed);
+                    $('#resultModal').modal('show');
+                    var thisdiv = '<div class="col-12 rs"><p style="font-weight:700;">Difference between '+sd+' and '+ed+' is '+result+'!</p></div>';
+                    $('.recent-searches').append(thisdiv);
+                    $('#startDate').val('');
+                    $('#endDate').val('');
+                }                
+            }
+            else{
+                alert("please Enter the start date and end Date!");
+            }
+            
+            
+            
+       });
+       
+   </script>
+</html>

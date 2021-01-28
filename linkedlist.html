@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">   
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>LinkedList Simulation</title>
+  </head>
+    <style>
+      body{
+        background: #67B26F;  
+        background: -webkit-linear-gradient(to right, #4ca2cd, #67B26F);  
+        background: linear-gradient(to right, #4ca2cd, #67B26F); 
+        font-weight:500;
+
+    }
+      img{
+        width:300px;
+      }
+      .row{
+        padding:30px;
+        display:box;
+        width:100%;
+      }
+      .node{
+        width:50%;
+        border:1px solid black;
+      }
+      .form-control{
+        width:60%;
+        display: inline-block;
+      }
+    </style>
+    <body>
+          <div class="container" style="padding:30px">
+            <div class="text-center"><h2>Linked List Implementation using JavaScript</h2></div>
+            <div class="row">
+              <div class="col">
+                <label>Add Node</label>
+                <input type="text" class="form-control" name='newnode' id='newnode' placeholder="Data to be Added" required>
+                <input type="button" class="btn btn-success btn-sm" type='submit' value='ADD' id="addnewnode">
+              </div>
+              <div class="col text-center">
+                <label>Delete Node</label>
+                <input type="text" class="form-control" name="deletenode" id="deletenode" placeholder="value of node to be deletd" required>
+                <input type="button" class="btn btn-danger btn-sm" type="submit" value="Delete" id="delete">
+              </div>
+            </div>
+        </div>
+        <hr>
+        <div class="container">
+          <div class="row linkedlist">
+
+          </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+          
+    </body>
+    <script>
+      var listNames = [];
+      
+      class Node{
+        constructor(data){
+          this.data = data;
+          this.next = null;
+        }
+      }
+      class LinkedList{
+        constructor(){
+          this.head = null;
+          this.size = 0;
+        }
+
+        addNode(data){
+          var newNode = new Node(data)
+          if (this.head==null){
+            this.head = newNode;
+          }
+          else{
+            var curr = this.head;
+            while(curr.next){
+              curr = curr.next;
+            }
+            curr.next = newNode;
+          }
+          this.size++;
+        }
+
+        deleteNode(data){
+          console.log(data);
+          var curr = this.head;
+          var prev = null;
+          while(curr){
+            if (curr.data==data){
+              if(prev==null){
+                this.head = curr.next;
+              }
+              else{
+                prev.next = curr.next;
+              }
+              return curr.data;
+            }
+            prev = curr;
+            curr = curr.next;
+          }
+          return -1;        
+        }
+        displayNodes(){
+          var curr = this.head;
+          var resultarr =[];
+          while(curr){
+            resultarr.push(curr.data);
+            curr = curr.next;
+          }
+          return resultarr;
+        }
+      }
+      var ll = new LinkedList();
+      $('#addnewnode').click(function(e){
+        e.preventDefault();
+        let thidata = $('#newnode').val();
+        if(thidata!=''){
+          ll.addNode(thidata); 
+          var thisdiv = '<div class="col-3" id="'+thidata+'"><div class="node"><h3>'+thidata+'</h3></div></div>';
+          $('.linkedlist').append(thisdiv);     
+          $('#newnode').val('');
+        }
+        else{
+          alert("Please enter some value!")
+        }
+         
+      })
+
+      $('#delete').click(function(e){
+        e.preventDefault();
+        let thisdata = $('#deletenode').val();
+        let x = ll.deleteNode(thisdata);
+        if(x==-1){
+          alert("Data not in the List");
+          $('#deletenode').css({"color":"red","font-weight":"500"});
+        }
+        else{
+          alert("Deleted the node "+x);
+          $('div').remove('#'+thisdata+'');
+          $('#deletenode').val('');
+        }
+      })
+      
+     function getData(){
+       return ll.displayNodes();
+     }
+
+
+    </script>
+</html>
